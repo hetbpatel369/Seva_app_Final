@@ -2,8 +2,8 @@
 * This file adds custom effects on top of the Bootstrap framework.
 */
 
+// Match Bootstrap's info color to our old primary for the glow
 :root {
-  // Match Bootstrap's info color to our old primary for the glow
   --bs-info-rgb: 34, 211, 238; 
 }
 
