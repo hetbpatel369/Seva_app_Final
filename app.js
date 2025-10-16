@@ -1,7 +1,3 @@
-// ============================================================================
-//  SEVA APP - REFACTORED (FIREBASE REAL-TIME + BOOTSTRAP)
-// ============================================================================
-
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- 1. GLOBAL VARIABLES & CONSTANTS ---
@@ -180,7 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 7. APP INITIALIZATION ---
     function initializeApp() {
-        console.log("Initializing Seva App...");
         setupEventListeners();
         checkLoginState();
         initializeRealtimeListener();
