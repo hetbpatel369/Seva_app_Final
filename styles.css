@@ -1,0 +1,28 @@
+/* * SEVA APP - CUSTOM STYLES & BOOTSTRAP OVERRIDES
+* This file adds custom effects on top of the Bootstrap framework.
+*/
+:root {
+  --bs-info-rgb: 34, 211, 238;
+}
+
+body {
+  background: linear-gradient(135deg, #212529, #343a40, #212529);
+  background-size: 200% 200%;
+  animation: gradient-animation 15s ease infinite;
+}
+
+.display-4 {
+  text-shadow: 0 0 8px rgba(var(--bs-info-rgb), 0.8), 0 0 20px rgba(var(--bs-info-rgb), 0.3);
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}/*# sourceMappingURL=styles.css.map */

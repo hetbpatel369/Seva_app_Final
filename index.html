@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Seva App</title>
+    <meta name="description" content="App for HariSanmukh House Cleaning Seva">
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="styles.css?v=20">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyCqBvMYrUBTbqHpE6hnE8UAA6rnWnwWBXk",
+          authDomain: "sevaapp-87cf1.firebaseapp.com",
+          databaseURL: "https://sevaapp-87cf1-default-rtdb.firebaseio.com",
+          projectId: "sevaapp-87cf1",
+          storageBucket: "sevaapp-87cf1.firebasestorage.app",
+          messagingSenderId: "88953951303",
+          appId: "1:88953951303:web:26bcfb85513e14ffbc4d62"
+        };
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        
+        window.firebase = { db: database, ref, set, onValue };
+    </script>
+</head>
+<body class="bg-dark text-light">
+
+    <div class="position-fixed top-0 start-0 p-3 z-3">
+        <button id="loginBtn" class="btn btn-info">🔐 Login</button>
+        <button id="logoutBtn" class="btn btn-danger" style="display: none;">🚪 Logout</button>
+    </div>
+
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">🔐 Admin Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username:</label>
+                        <input type="text" id="username" class="form-control" placeholder="Enter username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" id="password" class="form-control" placeholder="Enter password">
+                    </div>
+                    <div id="loginError" class="alert alert-danger" style="display: none;">
+                        ❌ Invalid credentials. Please try again.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="submitLogin" type="button" class="btn btn-primary">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container text-center py-5">
+        <header>
+            <h1 class="display-4 fw-bold text-info">IT'S HOUSE CLEANING SEVA TIME!</h1>
+            <p class="lead text-body-secondary">LETS TRY TO COMPLETE IT BEFORE SUNDAY 🙏</p>
+        </header>
+
+        <main class="my-4">
+            <div class="table-responsive-lg">
+                <table id="sevaTable" class="table table-dark table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col" style="width: 45%;">Seva</th>
+                            <th scope="col">Bhakto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sevaTableBody" class="table-group-divider">
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="text-info fst-italic my-4">સેવા માં બની ગરજુ ન કરીએ ફરિયાદ મફત જે મળી મોજ તેને લૂટી લઈએ આજ</p>
+
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center d-none" id="adminControls">
+                <button id="rotateBtn" class="btn btn-primary btn-lg px-4 gap-3">Rotate Assignments</button>
+                <button id="screenshotBtn" class="btn btn-outline-info btn-lg px-4">📸 Take Screenshot</button>
+                <button id="shareBtn" class="btn btn-outline-info btn-lg px-4">📤 Share to Group</button>
+                <button id="resetBtn" class="btn btn-outline-danger btn-lg px-4">🔄 Reset to Default</button>
+            </div>
+        </main>
+
+        <footer class="text-body-secondary mt-auto pt-4">
+            <p>Data is automatically synced across all devices</p>
+            <p>Last updated: <span id="lastUpdated"></span></p>
+            <div id="syncStatus" class="d-inline-flex align-items-center">
+                <span id="syncIndicator">🔄</span>
+                <span id="syncText" class="ms-2">Connecting...</span>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <script src="app.js?v=20"></script>
+</body>
+</html>
