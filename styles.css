@@ -1,28 +1,202 @@
-/* * SEVA APP - CUSTOM STYLES & BOOTSTRAP OVERRIDES
-* This file adds custom effects on top of the Bootstrap framework.
-*/
+/**
+ * Seva App - "Charcoal iOS" Theme V2
+ * 
+ * A modern, iOS-inspired dark theme for the Seva App.
+ * Features include glass-morphism effects, smooth animations, and custom color palette.
+ * 
+ * @author Seva App Contributors
+ * @version 2.0.0
+ */
 :root {
-  --bs-info-rgb: 34, 211, 238;
+  --charcoal-bg: #1c1c1e;
+  --charcoal-surface: #2c2c2e;
+  --text-primary: #f2f2f7;
+  --text-secondary: #f2f2f7;
+  --accent-color: #ffa653;
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+.text-info {
+  color: var(--accent-color) !important;
+}
+
+.btn-info {
+  --bs-btn-bg: var(--accent-color);
+  --bs-btn-border-color: var(--accent-color);
+  --bs-btn-color: var(--charcoal-bg);
+  --bs-btn-hover-bg: #e6954a;
+  --bs-btn-hover-border-color: #e6954a;
+  --bs-btn-hover-color: var(--charcoal-bg);
+}
+
+.btn-outline-info {
+  --bs-btn-color: var(--accent-color);
+  --bs-btn-border-color: var(--accent-color);
+  --bs-btn-hover-bg: var(--accent-color);
+  --bs-btn-hover-border-color: var(--accent-color);
+  --bs-btn-hover-color: var(--charcoal-bg);
 }
 
 body {
-  background: linear-gradient(135deg, #212529, #343a40, #212529);
-  background-size: 200% 200%;
-  animation: gradient-animation 15s ease infinite;
+  background-color: var(--charcoal-bg);
+  color: var(--text-primary);
 }
 
 .display-4 {
-  text-shadow: 0 0 8px rgba(var(--bs-info-rgb), 0.8), 0 0 20px rgba(var(--bs-info-rgb), 0.3);
+  font-family: "Domine", serif;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes gradient-animation {
-  0% {
-    background-position: 0% 50%;
+.lead {
+  color: var(--text-secondary);
+}
+
+main {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  background: var(--charcoal-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.table-responsive-lg {
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.02);
+  --bs-table-border-color: var(--glass-border);
+}
+
+#sevaTable thead th {
+  font-family: "Domine", serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+
+#sevaTable tbody td {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+#sevaTable tbody tr {
+  transition: background-color 0.3s ease;
+}
+#sevaTable tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--accent-color);
+  --bs-btn-border-color: var(--accent-color);
+  --bs-btn-color: var(--charcoal-bg);
+  --bs-btn-hover-bg: #e6954a;
+  --bs-btn-hover-border-color: #e6954a;
+  --bs-btn-hover-color: var(--charcoal-bg);
+  transition: all 0.3s ease;
+}
+
+/* --- PAGE LOAD ANIMATIONS --- */
+.header, main, .footer {
+  opacity: 0;
+  animation: fadeInSlideUp 0.6s ease-out forwards;
+}
+
+main {
+  animation-delay: 0.2s;
+}
+
+.footer {
+  animation-delay: 0.4s;
+}
+
+#sevaTable tbody tr {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInSlideUp 0.5s ease-out forwards;
+}
+
+#sevaTable tbody tr:nth-child(1) {
+  animation-delay: 0.45s;
+}
+
+#sevaTable tbody tr:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+#sevaTable tbody tr:nth-child(3) {
+  animation-delay: 0.55s;
+}
+
+#sevaTable tbody tr:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+#sevaTable tbody tr:nth-child(5) {
+  animation-delay: 0.65s;
+}
+
+#sevaTable tbody tr:nth-child(6) {
+  animation-delay: 0.7s;
+}
+
+#sevaTable tbody tr:nth-child(7) {
+  animation-delay: 0.75s;
+}
+
+#sevaTable tbody tr:nth-child(8) {
+  animation-delay: 0.8s;
+}
+
+#sevaTable tbody tr:nth-child(9) {
+  animation-delay: 0.85s;
+}
+
+#sevaTable tbody tr:nth-child(10) {
+  animation-delay: 0.9s;
+}
+
+#sevaTable tbody tr:nth-child(11) {
+  animation-delay: 0.95s;
+}
+
+#sevaTable tbody tr:nth-child(12) {
+  animation-delay: 1s;
+}
+
+/* --- KEYFRAME DEFINITIONS --- */
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  50% {
-    background-position: 100% 50%;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  100% {
-    background-position: 0% 50%;
-  }
-}/*# sourceMappingURL=styles.css.map */
+}
+/* --- ADD THIS CLASS FOR SCREENSHOTS --- */
+.screenshot-prep {
+  animation: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  opacity: 1 !important;
+}
+
+.screenshot-prep * {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+/*# sourceMappingURL=styles.css.map */

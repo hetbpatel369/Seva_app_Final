@@ -6,20 +6,34 @@
     <title>Weekly Seva App</title>
     <meta name="description" content="App for HariSanmukh House Cleaning Seva">
     
+    <meta name="theme-color" content="#ffa653">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
-    
+   
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Domine:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     
-    <link rel="stylesheet" href="styles.css?v=22">
+    <link rel="stylesheet" href="styles.css?v=24">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        // Import Auth functions (NOTE: createUser... is GONE)
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        // Import Realtime Database functions
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
         const firebaseConfig = {
@@ -31,18 +45,32 @@
           messagingSenderId: "88953951303",
           appId: "1:88953951303:web:26bcfb85513e14ffbc4d62"
         };
+        
+        // Initialize services
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
+        const auth = getAuth(app);
         
-        window.firebase = { db: database, ref, set, onValue };
+        // --- This is the FINAL secure object for app.js ---
+        window.firebase = { 
+            db: database, 
+            ref, 
+            set, 
+            onValue,
+            auth: auth,
+            signInWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut
+            // createUserWithEmailAndPassword has been removed
+        };
     </script>
 </head>
 <body class="bg-dark text-light">
 
-    <div class="position-fixed top-0 start-0 p-3 z-3">
-        <button id="loginBtn" class="btn btn-info">🔐 Login</button>
-        <button id="logoutBtn" class="btn btn-danger" style="display: none;">🚪 Logout</button>
-    </div>
+    <nav class="position-fixed top-0 start-0 p-3 z-3" aria-label="Admin authentication">
+        <button id="loginBtn" class="btn btn-info" aria-label="Login to admin panel">🔐 Login</button>
+        <button id="logoutBtn" class="btn btn-danger" style="display: none;" aria-label="Logout from admin panel">🚪 Logout</button>
+    </nav>
 
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -53,8 +81,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username:</label>
-                        <input type="text" id="username" class="form-control" placeholder="Enter username">
+                        <label for="username" class="form-label">Email:</label>
+                        <input type="text" id="username" class="form-control" placeholder="Enter email">
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password:</label>
@@ -94,11 +122,11 @@
 
             <p class="text-info fst-italic my-4">સેવા માં બની ગરજુ ન કરીએ ફરિયાદ મફત જે મળી મોજ તેને લૂટી લઈએ આજ</p>
 
-            <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 d-none" id="adminControls">
-                <button id="rotateBtn" class="btn btn-primary btn-lg px-4 gap-3">Rotate Assignments</button>
-                <button id="screenshotBtn" class="btn btn-outline-info btn-lg px-4">📸 Take Screenshot</button>
-                <button id="shareBtn" class="btn btn-outline-info btn-lg px-4">📤 Share to Group</button>
-                <button id="resetBtn" class="btn btn-outline-danger btn-lg px-4">🔄 Reset to Default</button>
+            <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 d-none" id="adminControls" role="toolbar" aria-label="Admin actions">
+                <button id="rotateBtn" class="btn btn-primary btn-lg px-4 gap-3" aria-label="Rotate seva assignments">Rotate Assignments</button>
+                <button id="screenshotBtn" class="btn btn-outline-info btn-lg px-4" aria-label="Take screenshot of assignments">📸 Take Screenshot</button>
+                <button id="shareBtn" class="btn btn-outline-info btn-lg px-4" aria-label="Share assignments to group">📤 Share to Group</button>
+                <button id="resetBtn" class="btn btn-outline-danger btn-lg px-4" aria-label="Reset to default assignments">🔄 Reset to Default</button>
             </div>
         </main>
 
@@ -113,6 +141,7 @@
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="app.js?v=22"></script>
+    
+    <script src="app.js?v=24" defer></script>
 </body>
 </html>

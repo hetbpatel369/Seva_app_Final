@@ -1,0 +1,23 @@
+{
+  "name": "Weekly Seva App",
+  "short_name": "Seva App",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1c1c1e",
+  "theme_color": "#ffa653",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
+
+
